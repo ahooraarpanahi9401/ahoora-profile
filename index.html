@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>پروفایل</title>
+<meta name="description" content="پروفایل شخصی" />
+<style>
+  :root{
+    --bg:#000000;
+    --bg2:#050507;
+    --card:#0c0c10;
+    --card2:#14141a;
+    --text:#ffffff;
+    --muted:rgba(255,255,255,.55);
+    --muted2:rgba(255,255,255,.35);
+    --accent:#ffffff;
+    --accent2:#a1a1aa;
+    --border:rgba(255,255,255,.08);
+    --border2:rgba(255,255,255,.14);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{font-family:'Vazirmatn','Segoe UI',Tahoma,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased}
+  body{display:flex;justify-content:center;padding:56px 16px 90px;background:radial-gradient(800px 400px at 50% 0%,rgba(255,255,255,.04),transparent 70%),var(--bg)}
+  a{color:inherit;text-decoration:none}
+  img{max-width:100%;display:block}
+
+  .wrap{width:100%;max-width:400px;display:flex;flex-direction:column;align-items:center;gap:12px;animation:fade .8s cubic-bezier(.2,.8,.2,1)}
+  @keyframes fade{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+  .bg{position:fixed;inset:0;z-index:-1;background-size:cover;background-position:center;opacity:.18;filter:grayscale(1) brightness(.7)}
+
+  .avatar{width:108px;height:108px;border-radius:50%;overflow:hidden;border:1px solid rgba(255,255,255,.18);background:linear-gradient(135deg,#1a1a22,#0a0a0f);display:grid;place-items:center;font-size:42px;box-shadow:0 0 0 4px rgba(255,255,255,.04),0 0 30px rgba(255,255,255,.08),0 20px 60px rgba(0,0,0,.6);transition:transform .4s ease}
+  .avatar:hover{transform:scale(1.03)}
+  .avatar img{width:100%;height:100%;object-fit:cover}
+
+  .name{font-size:26px;font-weight:700;letter-spacing:-.4px;margin-top:10px}
+  .handle{color:var(--muted);font-size:13px;margin-top:2px;letter-spacing:.2px}
+  .bio{color:var(--muted);font-size:13.5px;text-align:center;line-height:1.75;margin-top:10px;max-width:340px;font-weight:400;white-space:pre-line}
+
+  .socials{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;justify-content:center}
+  .social{width:38px;height:38px;border-radius:50%;border:1px solid var(--border);background:var(--card);display:grid;place-items:center;font-size:16px;color:var(--muted);transition:.25s}
+  .social:hover{color:var(--text);border-color:var(--border2);background:var(--card2);transform:translateY(-2px)}
+
+  .links{width:100%;display:flex;flex-direction:column;gap:8px;margin-top:14px}
+  .link{width:100%;padding:13px 15px;border-radius:12px;border:1px solid var(--border);background:var(--card);display:flex;align-items:center;gap:12px;transition:.25s;cursor:pointer;font-size:13.5px;font-weight:500;position:relative;overflow:hidden}
+  .link::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.04),transparent);opacity:0;transition:.3s}
+  .link:hover{border-color:var(--border2);background:var(--card2);transform:translateY(-1px)}
+  .link:hover::before{opacity:1}
+  .link .ic{width:32px;height:32px;border-radius:9px;background:var(--card2);border:1px solid var(--border);display:grid;place-items:center;font-size:15px;flex-shrink:0;color:var(--text)}
+  .link .txt{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .link .arrow{color:var(--muted2);font-size:15px;transition:.2s}
+  .link:hover .arrow{color:var(--text);transform:translateX(-3px)}
+
+  /* music player minimal */
+  .music{width:100%;margin-top:6px;padding:11px 13px;border-radius:12px;border:1px solid var(--border);background:var(--card);display:flex;align-items:center;gap:11px}
+  .music .cover{width:38px;height:38px;border-radius:9px;background:var(--card2);border:1px solid var(--border);display:grid;place-items:center;font-size:16px;flex-shrink:0;color:var(--muted)}
+  .music .info{flex:1;min-width:0}
+  .music .info .t{font-size:12.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .music .info .a{font-size:11px;color:var(--muted);margin-top:1px}
+  .music .progress{margin-top:7px;height:3px;background:rgba(255,255,255,.08);border-radius:999px;overflow:hidden}
+  .music .progress .fill{height:100%;width:0%;background:var(--text);border-radius:999px;transition:width .1s linear}
+  .music .btn{width:32px;height:32px;border-radius:50%;border:1px solid var(--border);background:var(--card2);color:var(--text);cursor:pointer;display:grid;place-items:center;font-size:12px;flex-shrink:0;transition:.2s}
+  .music .btn:hover{border-color:var(--border2);background:var(--card)}
+
+  .footer{color:var(--muted2);font-size:10.5px;margin-top:22px;text-align:center;letter-spacing:.3px}
+  .footer a{color:var(--muted);border-bottom:1px solid var(--border)}
+
+
+  audio{display:none}
+
+  /* chilly-eagle style social icons with tooltip */
+  .social.eagle{position:relative;background:#2a2a30;border:1px solid rgba(255,255,255,.12);transition:.25s;color:rgba(255,255,255,.85)}
+  .social.eagle .tooltip{position:absolute;bottom:calc(100% + 10px);left:50%;transform:translateX(-50%) translateY(8px);background:#fff;color:#111;padding:5px 11px;border-radius:7px;font-size:11px;font-weight:700;opacity:0;pointer-events:none;transition:.25s cubic-bezier(.68,-.55,.265,1.55);white-space:nowrap;box-shadow:0 10px 24px rgba(0,0,0,.4);letter-spacing:.2px}
+  .social.eagle .tooltip::before{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:6px solid transparent;border-top-color:#fff}
+  .social.eagle:hover .tooltip{opacity:1;transform:translateX(-50%) translateY(0)}
+  .social.eagle:hover{background:var(--hover,#0088cc);border-color:var(--hover,#0088cc);color:#fff;transform:translateY(-2px)}
+
+  @media(max-width:420px){
+    .wrap{max-width:100%}
+    .name{font-size:24px}
+  }
+</style>
+</head>
+<body>
+<div class="bg" id="bg"></div>
+<canvas id="petals" style="position:fixed;inset:0;z-index:0;pointer-events:none;"></canvas>
+
+<div class="wrap">
+  <div class="avatar" id="avatar">♪</div>
+  <div class="name" id="name">نام شما</div>
+  <div class="handle" id="handle">@username</div>
+  <div class="bio" id="bio">یک توضیح کوتاه دربارهٔ خودتان.</div>
+
+  <div class="socials" id="socials"></div>
+
+  <div class="music" id="music">
+    <div class="cover" id="mcover">♪</div>
+    <div class="info">
+      <div class="t" id="mtitle">نام آهنگ</div>
+      <div class="a" id="martist">خواننده</div>
+      <div class="progress"><div class="fill" id="mfill"></div></div>
+    </div>
+    <button class="btn" id="mplay">▶</button>
+  </div>
+
+  <div class="links" id="links"></div>
+
+  <div class="footer">ساخته شده با 🌹 • <a href="https://pages.github.com" target="_blank">GitHub Pages</a></div>
+</div>
+
+<audio id="audio" preload="metadata"></audio>
+
+<script>
+const CONFIG = {
+  name: "Ahoora",
+  handle: "@heavenlydemongoddd",
+  bio: "In the name of the Lord of soul and wisdom,\nbeyond whom no higher thought can pass 🌹",
+  avatar: "assets/avatar.jpg",
+  backgroundImage: "",
+  accent: "#ffffff",
+  accent2: "#a1a1aa",
+  socials: [
+    { icon: '<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>', url: "https://t.me/heavenlydemongoddd", label: "Telegram", hover: "#0088cc" },
+    { icon: '<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.241 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>', url: "https://open.spotify.com/user/31qru4dr45mswzyc6miz5ogkwlbe", label: "Spotify", hover: "#1DB954" },
+    { icon: '<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>', url: "https://github.com/ahooraarpanahi9401", label: "GitHub", hover: "#24292f" },
+  ],
+  track: {
+    title: "نام جاوید وطن",
+    artist: "سالار عقیلی",
+    src: "https://dl.musicviral.ir/Music/1404-03/Nam%20Javid%20Vatan%20Salar%20Aghili.mp3",
+  },
+  links: [
+    { icon: '<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>', title: "Telegram: @heavenlydemongoddd", url: "https://t.me/heavenlydemongoddd" },
+  ],
+};
+
+document.documentElement.style.setProperty('--accent', CONFIG.accent);
+document.documentElement.style.setProperty('--accent2', CONFIG.accent2);
+
+const avatarEl = document.getElementById('avatar');
+const img = new Image();
+img.src = CONFIG.avatar;
+img.onload = () => { avatarEl.innerHTML = ''; avatarEl.appendChild(img); };
+img.onerror = () => { avatarEl.textContent = '♪'; };
+
+document.getElementById('name').textContent = CONFIG.name;
+document.getElementById('handle').textContent = CONFIG.handle;
+document.getElementById('bio').textContent = CONFIG.bio;
+
+if (CONFIG.backgroundImage) {
+  document.getElementById('bg').style.backgroundImage = `url(${CONFIG.backgroundImage})`;
+}
+
+const socialsEl = document.getElementById('socials');
+CONFIG.socials.forEach(s => {
+  const a = document.createElement('a');
+  a.className = 'social eagle'; a.href = s.url; a.target = '_blank'; a.rel = 'noopener';
+  a.style.setProperty('--hover', s.hover || '#0088cc');
+  if (typeof s.icon === 'string' && s.icon.trim().startsWith('<')) a.innerHTML = s.icon;
+  else a.textContent = s.icon;
+  const tip = document.createElement('span');
+  tip.className = 'tooltip';
+  tip.textContent = s.label || '';
+  a.appendChild(tip);
+  socialsEl.appendChild(a);
+});
+
+const linksEl = document.getElementById('links');
+CONFIG.links.forEach(l => {
+  const a = document.createElement('a');
+  a.className = 'link'; a.href = l.url; a.target = '_blank'; a.rel = 'noopener';
+  a.innerHTML = `<div class="ic">${l.icon}</div><div class="txt">${l.title}</div><div class="arrow">›</div>`;
+  linksEl.appendChild(a);
+});
+
+const audio = document.getElementById('audio');
+const mtitle = document.getElementById('mtitle');
+const martist = document.getElementById('martist');
+const mfill = document.getElementById('mfill');
+const mplay = document.getElementById('mplay');
+const mcover = document.getElementById('mcover');
+
+mtitle.textContent = CONFIG.track.title;
+martist.textContent = CONFIG.track.artist;
+audio.src = CONFIG.track.src;
+
+let playing = false;
+mplay.addEventListener('click', () => {
+  if (!audio.src || audio.src.endsWith('/') || audio.src === window.location.href) {
+    mtitle.textContent = 'لینک MP3 را در profile.json اضافه کنید';
+    return;
+  }
+  if (!playing) {
+    audio.play().then(() => { playing = true; mplay.textContent = '⏸'; }).catch(() => { playing = true; mplay.textContent = '⏸'; });
+  } else {
+    audio.pause(); playing = false; mplay.textContent = '▶';
+  }
+});
+audio.addEventListener('timeupdate', () => {
+  if (audio.duration) mfill.style.width = (audio.currentTime / audio.duration * 100) + '%';
+});
+audio.addEventListener('ended', () => { playing = false; mplay.textContent = '▶'; mfill.style.width = '0%'; });
+
+/* ===================== Rose petals falling ===================== */
+(function(){
+  const canvas = document.getElementById('petals');
+  const ctx = canvas.getContext('2d');
+  let W, H, petals = [];
+  const COLORS = ['#ff6b8a','#ff8fab','#f472b6','#fda4af','#fecdd3','#e11d48'];
+  function resize(){ W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+  resize(); window.addEventListener('resize', resize);
+
+  function makePetal(){
+    return {
+      x: Math.random()*W,
+      y: Math.random()*-H,
+      size: 6 + Math.random()*10,
+      speed: 0.6 + Math.random()*1.2,
+      sway: 0.5 + Math.random()*1.5,
+      swayPhase: Math.random()*Math.PI*2,
+      rot: Math.random()*Math.PI*2,
+      rotSpeed: (Math.random()-.5)*0.04,
+      color: COLORS[Math.floor(Math.random()*COLORS.length)],
+      alpha: 0.55 + Math.random()*0.35,
+    };
+  }
+  const COUNT = 34;
+  for (let i=0;i<COUNT;i++){ const p = makePetal(); p.y = Math.random()*H; petals.push(p); }
+
+  function drawPetal(p){
+    ctx.save();
+    ctx.translate(p.x, p.y);
+    ctx.rotate(p.rot);
+    ctx.globalAlpha = p.alpha;
+    // petal shape
+    ctx.beginPath();
+    const s = p.size;
+    ctx.moveTo(0, -s);
+    ctx.bezierCurveTo(s*0.9, -s*0.6, s*0.9, s*0.6, 0, s);
+    ctx.bezierCurveTo(-s*0.9, s*0.6, -s*0.9, -s*0.6, 0, -s);
+    ctx.closePath();
+    // gradient fill
+    const g = ctx.createRadialGradient(0,0,0,0,0,s);
+    g.addColorStop(0, p.color);
+    g.addColorStop(1, 'rgba(180,20,60,0.6)');
+    ctx.fillStyle = g;
+    ctx.fill();
+    // subtle highlight
+    ctx.globalAlpha = p.alpha*0.35;
+    ctx.beginPath();
+    ctx.ellipse(-s*0.2, -s*0.3, s*0.25, s*0.5, 0, 0, Math.PI*2);
+    ctx.fillStyle = 'rgba(255,255,255,0.6)';
+    ctx.fill();
+    ctx.restore();
+  }
+
+  function tick(){
+    ctx.clearRect(0,0,W,H);
+    for (const p of petals){
+      p.y += p.speed;
+      p.x += Math.sin(p.y*0.01 + p.swayPhase) * p.sway * 0.3;
+      p.rot += p.rotSpeed;
+      p.swayPhase += 0.01;
+      if (p.y > H + 20){
+        Object.assign(p, makePetal());
+        p.y = -20;
+      }
+      if (p.x < -20) p.x = W+20;
+      if (p.x > W+20) p.x = -20;
+      drawPetal(p);
+    }
+    requestAnimationFrame(tick);
+  }
+  tick();
+})();
+
+/* ===================== Auto-sync profile from profile.json (polling) ===================== */
+function syncProfile() {
+  fetch('profile.json', { cache: 'no-store' })
+    .then(r => r.ok ? r.json() : null)
+    .then(p => {
+      if (!p) return;
+      if (p.name) { CONFIG.name = p.name; document.getElementById('name').textContent = p.name; }
+      if (p.handle) { CONFIG.handle = p.handle; document.getElementById('handle').textContent = p.handle; }
+      if (p.bio) { CONFIG.bio = p.bio; document.getElementById('bio').textContent = p.bio; }
+      if (p.avatar) {
+        CONFIG.avatar = p.avatar;
+        const av = document.getElementById('avatar');
+        const im = new Image();
+        im.src = p.avatar;
+        im.onload = () => { av.innerHTML = ''; av.appendChild(im); };
+        im.onerror = () => { av.textContent = '♪'; };
+      }
+      if (p.track) {
+        CONFIG.track = Object.assign({}, CONFIG.track, p.track);
+        const mtitle = document.getElementById('mtitle');
+        const martist = document.getElementById('martist');
+        const audio = document.getElementById('audio');
+        if (mtitle && CONFIG.track.title) mtitle.textContent = CONFIG.track.title;
+        if (martist && CONFIG.track.artist) martist.textContent = CONFIG.track.artist;
+        if (audio && CONFIG.track.src) audio.src = CONFIG.track.src;
+      }
+      const socialsEl = document.getElementById('socials');
+      if (socialsEl && (p.telegram || p.spotify || p.github)) {
+        const map = { 't.me': p.telegram, 'spotify.com': p.spotify, 'github.com': p.github };
+        CONFIG.socials.forEach(s => {
+          for (const k in map) {
+            if (map[k] && s.url && s.url.includes(k)) s.url = map[k];
+          }
+        });
+        socialsEl.innerHTML = '';
+        CONFIG.socials.forEach(s => {
+          const a = document.createElement('a');
+          a.className = 'social eagle'; a.href = s.url; a.target = '_blank'; a.rel = 'noopener';
+          a.style.setProperty('--hover', s.hover || '#0088cc');
+          if (typeof s.icon === 'string' && s.icon.trim().startsWith('<')) a.innerHTML = s.icon;
+          else a.textContent = s.icon;
+          const tip = document.createElement('span');
+          tip.className = 'tooltip';
+          tip.textContent = s.label || '';
+          a.appendChild(tip);
+          socialsEl.appendChild(a);
+        });
+      }
+    })
+    .catch(() => { /* keep defaults */ });
+}
+syncProfile();
+setInterval(syncProfile, 60000);   // poll every 60s for near-real-time updates
+
+</script>
+</body>
+</html>
